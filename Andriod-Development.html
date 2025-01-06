@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Andriod Development- E-Learning Platform</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      background-color: #333;
+      color: white;
+      padding: 1em;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      flex: 1;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #333;
+      color: white;
+      padding: 1em;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      position: relative;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebar.hide {
+      transform: translateX(-100%);
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      margin: 10px 0;
+    }
+
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      display: block;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .sidebar ul li a:hover {
+      background: #575757;
+    }
+
+    .progress-overall {
+      margin-top: 20px;
+      padding: 10px;
+      background: #4CAF50;
+      border-radius: 10px;
+      color: white;
+      text-align: center;
+    }
+
+    .content {
+      flex: 1;
+      padding: 2em;
+      overflow-y: auto;
+    }
+
+    .lesson-container {
+      display: none;
+    }
+
+    iframe {
+      width: 100%;
+      height: 315px;
+      border: none;
+    }
+
+    .quiz {
+      display: none;
+      margin-top: 1em;
+      padding: 1em;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background: #f9f9f9;
+    }
+
+    .quiz h3 {
+      margin-bottom: 1em;
+    }
+
+    .quiz-options {
+      list-style: none;
+      padding: 0;
+    }
+
+    .quiz-options li {
+      margin-bottom: 10px;
+    }
+
+    .result {
+      display: none;
+      margin-top: 1em;
+      padding: 1em;
+      border: 1px solid #4CAF50;
+      border-radius: 10px;
+      background: #dff0d8;
+    }
+
+    .result h3 {
+      color: #4CAF50;
+    }
+
+    .progress-tracker {
+      display: none;
+      margin-top: 1em;
+      font-size: 1.2em;
+    }
+
+    .toggle-btn {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background: #333;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 18px;
+      transition: background 0.3s;
+      z-index: 999;
+    }
+
+    .toggle-btn:hover {
+      background: #575757;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        transform: translateX(-100%);
+      }
+
+      .sidebar.show {
+        transform: translateX(0);
+      }
+
+      .content {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <header>
+    <h1>Andriod Development - E-Learning Platform</h1>
+  </header>
+
+  <div class="container">
+    <div id="sidebar" class="sidebar">
+      <h2>Topics</h2>
+      <ul>
+        <li><a onclick="showLesson(1)">Introduction to Android Development</a></li>
+        <li><a onclick="showLesson(2)">Setting Up Android Studio</a></li>
+        <li><a onclick="showLesson(3)">Building Your First Android App (Hello World)</a></li>
+        <li><a onclick="showLesson(4)">Understanding the Android Lifecycle</a></li>
+        <li><a onclick="showLesson(5)">Creating UI with XML</a></li>
+        <li><a onclick="showLesson(6)">Working with RecyclerView and Adapter</a></li>
+        <li><a onclick="showLesson(7)">Understanding Intents in Android</a></li>
+        <li><a onclick="showLesson(8)">Networking in Android (API Calls using Retrofit)</a></li>
+        <li><a onclick="showLesson(9)">Room Database in Android</a></li>
+        <li><a onclick="showLesson(10)">Firebase Authentication in Android</a></li>
+      </ul>
+      <div id="overall-progress" class="progress-overall">
+        Overall Progress: 0%
+      </div>
+    </div>
+  
+    <div class="content">
+      <!-- Lesson 1 -->
+      <div id="lesson-1" class="lesson-container">
+        <h2>Introduction to Android Development</h2>
+        <iframe id="video-1" src="https://www.youtube.com/embed/TK9nS5XY1ZA" allowfullscreen></iframe>
+        <button onclick="unlockQuiz(1)">Complete Video</button>
+  
+        <div id="quiz-1" class="quiz">
+          <h3>Quiz: Introduction to Android Development</h3>
+          <div id="question-1" class="question"></div>
+          <ul id="options-1" class="quiz-options"></ul>
+          <button onclick="nextQuestion(1)" id="next-btn-1">Next</button>
+        </div>
+  
+        <div id="result-1" class="result"></div>
+        <div id="progress-tracker-1" class="progress-tracker"></div>
+      </div>
+  
+      <!-- Lesson 2 -->
+      <div id="lesson-2" class="lesson-container">
+        <h2>Setting Up Android Studio</h2>
+        <iframe id="video-2" src="https://www.youtube.com/embed/xXGfkeWgf8I" allowfullscreen></iframe>
+        <button onclick="unlockQuiz(2)">Complete Video</button>
+  
+        <div id="quiz-2" class="quiz">
+          <h3>Quiz: Setting Up Android Studio</h3>
+          <div id="question-2" class="question"></div>
+          <ul id="options-2" class="quiz-options"></ul>
+          <button onclick="nextQuestion(2)" id="next-btn-2">Next</button>
+        </div>
+  
+        <div id="result-2" class="result"></div>
+        <div id="progress-tracker-2" class="progress-tracker"></div>
+      </div>
+  
+      <!-- Lesson 3 -->
+      <div id="lesson-3" class="lesson-container">
+        <h2>Building Your First Android App (Hello World)</h2>
+        <iframe id="video-3" src="https://www.youtube.com/embed/fis26HvvDII" allowfullscreen></iframe>
+        <button onclick="unlockQuiz(3)">Complete Video</button>
+  
+        <div id="quiz-3" class="quiz">
+          <h3>Quiz: Building Your First Android App (Hello World)</h3>
+          <div id="question-3" class="question"></div>
+          <ul id="options-3" class="quiz-options"></ul>
+          <button onclick="nextQuestion(3)" id="next-btn-3">Next</button>
+        </div>
+  
+        <div id="result-3" class="result"></div>
+        <div id="progress-tracker-3" class="progress-tracker"></div>
+      </div>
+  
+      <!-- Lesson 4 -->
+      <div id="lesson-4" class="lesson-container">
+        <h2>Understanding the Android Lifecycle</h2>
+        <iframe id="video-4" src="https://www.youtube.com/embed/-dOdDBfw33A" allowfullscreen></iframe>
+        <button onclick="unlockQuiz(4)">Complete Video</button>
+  
+        <div id="quiz-4" class="quiz">
+          <h3>Quiz: Understanding the Android Lifecycle</h3>
+          <div id="question-4" class="question"></div>
+          <ul id="options-4" class="quiz-options"></ul>
+          <button onclick="nextQuestion(4)" id="next-btn-4">Next</button>
+        </div>
+  
+        <div id="result-4" class="result"></div>
+        <div id="progress-tracker-4" class="progress-tracker"></div>
+      </div>
+  
+      <!-- Lesson 5 -->
+      <div id="lesson-5" class="lesson-container">
+        <h2>Creating UI with XML</h2>
+        <iframe id="video-5" src="https://www.youtube.com/embed/15n9uFUt-Xg" allowfullscreen></iframe>
+        <button onclick="unlockQuiz(5)">Complete Video</button>
+  
+        <div id="quiz-5" class="quiz">
+          <h3>Quiz: Creating UI with XML</h3>
+          <div id="question-5" class="question"></div>
+          <ul id="options-5" class="quiz-options"></ul>
+          <button onclick="nextQuestion(5)" id="next-btn-5">Next</button>
+        </div>
+  
+        <div id="result-5" class="result"></div>
+        <div id="progress-tracker-5" class="progress-tracker"></div>
+      </div>
+  
+      <!-- Lesson 6 -->
+      <div id="lesson-6" class="lesson-container">
+        <h2>Working with RecyclerView and Adapter</h2>
+        <iframe id="video-6" src="https://www.youtube.com/embed/ZJ5n7O7tXrs" allowfullscreen></iframe>
+        <button onclick="unlockQuiz(6)">Complete Video</button>
+  
+        <div id="quiz-6" class="quiz">
+          <h3>Quiz: Working with RecyclerView and Adapter</h3>
+          <div id="question-6" class="question"></div>
+          <ul id="options-6" class="quiz-options"></ul>
+          <button onclick="nextQuestion(6)" id="next-btn-6">Next</button>
+        </div>
+  
+        <div id="result-6" class="result"></div>
+        <div id="progress-tracker-6" class="progress-tracker"></div>
+      </div>
+  
+      <!-- Lesson 7 -->
+      <div id="lesson-7" class="lesson-container">
+        <h2>Understanding Intents in Android</h2>
+        <iframe id="video-7" src="https://www.youtube.com/embed/CTzdyfG9VJw" allowfullscreen></iframe>
+        <button onclick="unlockQuiz(7)">Complete Video</button>
+  
+        <div id="quiz-7" class="quiz">
+          <h3>Quiz: Understanding Intents in Android</h3>
+          <div id="question-7" class="question"></div>
+          <ul id="options-7" class="quiz-options"></ul>
+          <button onclick="nextQuestion(7)" id="next-btn-7">Next</button>
+        </div>
+  
+        <div id="result-7" class="result"></div>
+        <div id="progress-tracker-7" class="progress-tracker"></div>
+      </div>
+  
+      <!-- Lesson 8 -->
+      <div id="lesson-8" class="lesson-container">
+        <h2>Networking in Android (API Calls using Retrofit)</h2>
+        <iframe id="video-8" src="https://www.youtube.com/embed/Tp0pa-zGgH0" allowfullscreen></iframe>
+        <button onclick="unlockQuiz(8)">Complete Video</button>
+  
+        <div id="quiz-8" class="quiz">
+          <h3>Quiz: Networking in Android (API Calls using Retrofit)</h3>
+          <div id="question-8" class="question"></div>
+          <ul id="options-8" class="quiz-options"></ul>
+          <button onclick="nextQuestion(8)" id="next-btn-8">Next</button>
+        </div>
+  
+        <div id="result-8" class="result"></div>
+        <div id="progress-tracker-8" class="progress-tracker"></div>
+      </div>
+  
+      <!-- Lesson 9 -->
+      <div id="lesson-9" class="lesson-container">
+        <h2>Room Database in Android</h2>
+        <iframe id="video-9" src="https://www.youtube.com/embed/MslS5zF6IZY" allowfullscreen></iframe>
+        <button onclick="unlockQuiz(9)">Complete Video</button>
+  
+        <div id="quiz-9" class="quiz">
+          <h3>Quiz: Room Database in Android</h3>
+          <div id="question-9" class="question"></div>
+          <ul id="options-9" class="quiz-options"></ul>
+          <button onclick="nextQuestion(9)" id="next-btn-9">Next</button>
+        </div>
+  
+        <div id="result-9" class="result"></div>
+        <div id="progress-tracker-9" class="progress-tracker"></div>
+      </div>
+  
+      <!-- Lesson 10 -->
+      <div id="lesson-10" class="lesson-container">
+        <h2>Firebase Authentication in Android</h2>
+        <iframe id="video-10" src="https://www.youtube.com/embed/-KHJ9xprTLk" allowfullscreen></iframe>
+        <button onclick="unlockQuiz(10)">Complete Video</button>
+  
+        <div id="quiz-10" class="quiz">
+          <h3>Quiz: Firebase Authentication in Android</h3>
+          <div id="question-10" class="question"></div>
+          <ul id="options-10" class="quiz-options"></ul>
+          <button onclick="nextQuestion(10)" id="next-btn-10">Next</button>
+        </div>
+  
+        <div id="result-10" class="result"></div>
+        <div id="progress-tracker-10" class="progress-tracker"></div>
+      </div>
+    </div>
+  </div>
+  
+
+  <script>
+   const lessons = [
+  {
+    id: 1,
+    title: "Introduction to Android Development",
+    quiz: [
+      { question: "What is Android?", options: ["A type of mobile OS", "A programming language", "A web framework", "A device"], correct: 0 },
+      { question: "Which language is primarily used for Android development?", options: ["Java", "C#", "Python", "JavaScript"], correct: 0 },
+      { question: "Who developed Android?", options: ["Apple", "Google", "Microsoft", "Samsung"], correct: 1 },
+      { question: "What is the Android SDK?", options: ["Software Development Kit", "Software Design Kit", "System Development Kit", "System Design Kit"], correct: 0 },
+      { question: "What is the default Android IDE?", options: ["Eclipse", "Android Studio", "Xcode", "NetBeans"], correct: 1 },
+    ],
+    completed: false
+  },
+  {
+    id: 2,
+    title: "Setting Up Android Studio",
+    quiz: [
+      { question: "Which operating system is not supported by Android Studio?", options: ["Windows", "macOS", "Linux", "iOS"], correct: 3 },
+      { question: "Which of the following is required for running Android Studio?", options: ["8GB RAM", "16GB RAM", "4GB RAM", "2GB RAM"], correct: 0 },
+      { question: "What is the default emulator used in Android Studio?", options: ["Genymotion", "Android Emulator", "BlueStacks", "NoxPlayer"], correct: 1 },
+      { question: "What is the minimum Java version required for Android Studio?", options: ["Java 8", "Java 6", "Java 7", "Java 10"], correct: 0 },
+      { question: "Which component is used to build an Android application in Android Studio?", options: ["Gradle", "Maven", "Ant", "JUnit"], correct: 0 },
+    ],
+    completed: false
+  },
+  {
+    id: 3,
+    title: "Building Your First Android App (Hello World)",
+    quiz: [
+      { question: "Which method is the entry point of an Android activity?", options: ["onStart()", "onCreate()", "onResume()", "onStop()"], correct: 1 },
+      { question: "Which layout is commonly used for a simple Hello World app?", options: ["LinearLayout", "RelativeLayout", "ConstraintLayout", "FrameLayout"], correct: 0 },
+      { question: "In which file is the app's user interface defined in Android Studio?", options: ["AndroidManifest.xml", "MainActivity.java", "res/layout/activity_main.xml", "build.gradle"], correct: 2 },
+      { question: "What is the correct tag for displaying text in Android?", options: ["<TextView>", "<Text>", "<Button>", "<ImageView>"], correct: 0 },
+      { question: "Which file contains the main entry point for an Android application?", options: ["AndroidManifest.xml", "MainActivity.java", "gradle.properties", "build.gradle"], correct: 1 },
+    ],
+    completed: false
+  },
+  {
+    id: 4,
+    title: "Understanding the Android Lifecycle",
+    quiz: [
+      { question: "Which of the following is called when an activity becomes visible?", options: ["onStart()", "onPause()", "onStop()", "onCreate()"], correct: 0 },
+      { question: "Which method is called when an activity is about to be destroyed?", options: ["onPause()", "onStop()", "onDestroy()", "onRestart()"], correct: 2 },
+      { question: "Which method is called when the activity is first created?", options: ["onCreate()", "onStart()", "onResume()", "onPause()"], correct: 0 },
+      { question: "What is the purpose of the onPause() method?", options: ["To resume the activity", "To prepare for the activity being stopped", "To release system resources", "To initialize the activity"], correct: 1 },
+      { question: "Which method is called when the user navigates back to the activity?", options: ["onStart()", "onResume()", "onPause()", "onStop()"], correct: 1 },
+    ],
+    completed: false
+  },
+  {
+    id: 5,
+    title: "Creating UI with XML",
+    quiz: [
+      { question: "Which XML element is used to create a button in Android?", options: ["<Button>", "<TextView>", "<EditText>", "<ImageView>"], correct: 0 },
+      { question: "Which layout is commonly used for creating a flexible UI in Android?", options: ["LinearLayout", "RelativeLayout", "TableLayout", "GridLayout"], correct: 1 },
+      { question: "Which attribute in a TextView is used to set the text size?", options: ["android:textSize", "android:layout_width", "android:padding", "android:textColor"], correct: 0 },
+      { question: "Which view is used to display a single line of text?", options: ["TextView", "Button", "ImageView", "EditText"], correct: 0 },
+      { question: "Which XML attribute defines the width of a layout?", options: ["android:layout_height", "android:layout_width", "android:textSize", "android:gravity"], correct: 1 },
+    ],
+    completed: false
+  },
+  {
+    id: 6,
+    title: "Working with RecyclerView and Adapter",
+    quiz: [
+      { question: "What is the primary purpose of RecyclerView?", options: ["To display a large list of data", "To display small text", "To display images", "To display videos"], correct: 0 },
+      { question: "Which of the following is required to use RecyclerView?", options: ["Adapter", "ViewHolder", "LayoutManager", "All of the above"], correct: 3 },
+      { question: "Which method is used to create a ViewHolder?", options: ["onCreateViewHolder()", "onBindViewHolder()", "onItemClick()", "onCreate()"], correct: 0 },
+      { question: "What is the role of the Adapter in RecyclerView?", options: ["To manage the data", "To display the data", "To manage the layout", "To handle the clicks"], correct: 0 },
+      { question: "Which layout is commonly used with RecyclerView?", options: ["LinearLayout", "GridLayout", "StaggeredGridLayout", "All of the above"], correct: 3 },
+    ],
+    completed: false
+  },
+  {
+    id: 7,
+    title: "Understanding Intents in Android",
+    quiz: [
+      { question: "What is an Intent in Android?", options: ["A messaging object", "A view component", "A layout manager", "A UI element"], correct: 0 },
+      { question: "Which of the following is used to start a new activity?", options: ["Intent", "IntentFilter", "PendingIntent", "BroadcastReceiver"], correct: 0 },
+      { question: "Which method is used to start an activity using an intent?", options: ["startActivity()", "onStartActivity()", "launchActivity()", "onActivityStarted()"], correct: 0 },
+      { question: "What is a PendingIntent used for?", options: ["To perform an action in the future", "To launch an activity", "To broadcast messages", "To filter intents"], correct: 0 },
+      { question: "Which type of intent is used to pass data between components?", options: ["Explicit Intent", "Implicit Intent", "Broadcast Intent", "All of the above"], correct: 1 },
+    ],
+    completed: false
+  },
+  {
+    id: 8,
+    title: "Networking in Android (API Calls using Retrofit)",
+    quiz: [
+      { question: "What is Retrofit used for in Android?", options: ["API calls", "Database management", "UI components", "Background tasks"], correct: 0 },
+      { question: "Which of the following is a Retrofit annotation?", options: ["@GET", "@POST", "@PUT", "All of the above"], correct: 3 },
+      { question: "Which converter is used in Retrofit to parse JSON responses?", options: ["GsonConverterFactory", "MoshiConverterFactory", "JacksonConverterFactory", "All of the above"], correct: 0 },
+      { question: "Which HTTP method is used to send data to a server using Retrofit?", options: ["POST", "GET", "PUT", "DELETE"], correct: 0 },
+      { question: "Which of the following is required for Retrofit to work?", options: ["Base URL", "API Interface", "Converter", "All of the above"], correct: 3 },
+    ],
+    completed: false
+  },
+  {
+    id: 9,
+    title: "Room Database in Android",
+    quiz: [
+      { question: "What is the purpose of Room Database in Android?", options: ["To provide a local database", "To manage network connections", "To display UI components", "To manage background tasks"], correct: 0 },
+      { question: "Which class is used to interact with the Room Database?", options: ["RoomDatabase", "Dao", "Entity", "DatabaseHelper"], correct: 1 },
+      { question: "What does an Entity represent in Room Database?", options: ["A table in the database", "A query", "A column in the table", "A relationship"], correct: 0 },
+      { question: "Which annotation is used to create a Room Database entity?", options: ["@Entity", "@Database", "@Dao", "@PrimaryKey"], correct: 0 },
+      { question: "Which annotation is used to mark a method in a DAO class?", options: ["@Query", "@Insert", "@Delete", "All of the above"], correct: 3 },
+    ],
+    completed: false
+  },
+  {
+    id: 10,
+    title: "Firebase Authentication in Android",
+    quiz: [
+      { question: "What is Firebase Authentication used for?", options: ["User authentication", "Database management", "File storage", "Real-time data syncing"], correct: 0 },
+      { question: "Which method is used to sign in a user with email and password?", options: ["signInWithEmailAndPassword()", "signInWithGoogle()", "signInWithFacebook()", "signInWithPhone()"], correct: 0 },
+      { question: "Which of the following can be used to authenticate users in Firebase?", options: ["Email/Password", "Google Sign-In", "Facebook Login", "All of the above"], correct: 3 },
+      { question: "Which Firebase feature helps store user data securely?", options: ["Firebase Realtime Database", "Firebase Firestore", "Firebase Storage", "Firebase Authentication"], correct: 1 },
+      { question: "What is the purpose of Firebase AuthStateListener?", options: ["To track authentication state changes", "To store user data", "To send push notifications", "To manage database connections"], correct: 0 },
+    ],
+    completed: false
+  }
+];
+
+
+
+
+    let currentQuestion = {};
+    let scores = {};
+    let overallCompleted = 0;
+
+    function showLesson(lessonId) {
+      document.querySelectorAll(".lesson-container").forEach(container => container.style.display = "none");
+      document.getElementById(`lesson-${lessonId}`).style.display = "block";
+    }
+
+    function unlockQuiz(lessonId) {
+      document.getElementById(`quiz-${lessonId}`).style.display = "block";
+      scores[lessonId] = 0;
+      loadQuestion(lessonId, 0);
+    }
+
+    function loadQuestion(lessonId, questionIndex) {
+      const lesson = lessons.find(l => l.id === lessonId);
+      currentQuestion[lessonId] = questionIndex;
+
+      const questionElement = document.getElementById(`question-${lessonId}`);
+      const optionsElement = document.getElementById(`options-${lessonId}`);
+      const question = lesson.quiz[questionIndex];
+
+      questionElement.innerText = question.question;
+      optionsElement.innerHTML = question.options.map((option, i) => `
+        <li>
+          <input type="radio" id="option-${lessonId}-${i}" name="quiz-${lessonId}" value="${i}">
+          <label for="option-${lessonId}-${i}">${option}</label>
+        </li>`).join("");
+
+      document.getElementById(`next-btn-${lessonId}`).innerText = questionIndex < lesson.quiz.length - 1 ? "Next" : "Submit";
+    }
+
+    function nextQuestion(lessonId) {
+      const lesson = lessons.find(l => l.id === lessonId);
+      const questionIndex = currentQuestion[lessonId];
+      const selectedOption = document.querySelector(`input[name="quiz-${lessonId}"]:checked`);
+
+      if (!selectedOption) {
+        alert("Please select an answer!");
+        return;
+      }
+
+      if (parseInt(selectedOption.value) === lesson.quiz[questionIndex].correct) {
+        scores[lessonId]++;
+      }
+
+      if (questionIndex < lesson.quiz.length - 1) {
+        loadQuestion(lessonId, questionIndex + 1);
+      } else {
+        showResult(lessonId);
+      }
+    }
+
+    function showResult(lessonId) {
+      document.getElementById(`quiz-${lessonId}`).style.display = "none";
+
+      const resultElement = document.getElementById(`result-${lessonId}`);
+      const progressTracker = document.getElementById(`progress-tracker-${lessonId}`);
+      const totalQuestions = lessons.find(l => l.id === lessonId).quiz.length;
+
+      resultElement.style.display = "block";
+      resultElement.innerHTML = `<h3>Your Score: ${scores[lessonId]} / ${totalQuestions}</h3>`;
+      progressTracker.style.display = "block";
+      progressTracker.innerText = `Progress: ${scores[lessonId]} / ${totalQuestions}`;
+
+      lessons.find(l => l.id === lessonId).completed = true;
+      updateOverallProgress();
+    }
+
+    function updateOverallProgress() {
+      const completedLessons = lessons.filter(lesson => lesson.completed).length;
+      const overallProgress = Math.round((completedLessons / lessons.length) * 100);
+      document.getElementById("overall-progress").innerText = `Overall Progress: ${overallProgress}%`;
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("hide");
+    }
+  </script>
+</body>
+</html>

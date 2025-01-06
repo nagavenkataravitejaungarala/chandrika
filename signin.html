@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnHub - Online Learning Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* General Styles */
+        body, html {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        /* Modal for Sign In / Sign Up */
+        .modal {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .modal input[type="text"],
+        .modal input[type="password"],
+        .modal input[type="email"] {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .modal button {
+            width: 100%;
+            padding: 0.8rem;
+            background: #2C7D89;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal button:hover {
+            background: #21818d;
+        }
+
+        /* Navigation */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: #2C7D89;
+            color: white;
+            padding: 5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 70vh; /* Adjust to fill more screen */
+        }
+
+        .hero-content {
+            max-width: 500px;
+        }
+
+        .hero-image {
+            width: 40%;
+            height: 300px;
+            background: #fff;
+            border-radius: 10px;
+        }
+
+        /* Course Categories */
+        .categories {
+            padding: 3rem 5%;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .category-tabs {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .category-tab {
+            padding: 0.5rem 1rem;
+            background: #f0f0f0;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        /* Course Grid */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .course-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .course-image {
+            width: 100%;
+            height: 150px;
+            background: #f0f0f0;
+        }
+
+        .course-info {
+            padding: 1rem;
+        }
+
+        .course-rating {
+            color: #f4c150;
+        }
+
+        .course-price {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .premium-badge {
+            background: #5624d0;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        /* Fullscreen Adjustment */
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        .modal, .navbar, .hero, .categories {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .hero {
+            min-height: 70vh;
+        }
+
+        .course-grid {
+            padding: 3rem 5%;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                min-height: 60vh;
+            }
+
+            .hero-content {
+                max-width: 100%;
+                padding-bottom: 2rem;
+            }
+
+            .hero-image {
+                width: 100%;
+                height: 250px;
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .category-tabs {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .hero {
+                padding: 3rem 2%;
+            }
+
+            .hero-image {
+                height: 200px;
+            }
+
+            .category-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sign In / Sign Up Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <h2>Sign In</h2>
+            <form id="authForm">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Sign In</button>
+                <p>Don't have an account? <a href="#" id="showSignUp">Sign Up</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" style="display:none; width: 100%;">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="logo">LearnHub</div>
+            <div class="nav-links">
+                <a href="explore.html">Explore</a>
+                <a href="learning.html">My Learning</a>
+                <a href="#">Sign In</a>
+            </div>
+        </nav>
+        
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Learn the skills you need for your future</h1>
+                <p>Unlock a world of knowledge with expert-led courses</p>
+            </div>
+            <div class="hero-image">
+                <img src="E-Learning-570x255.jpg" alt="E-Learning" style="width: 100%; height: 100%; border-radius: 10px;">
+            </div>
+        </section>
+        
+        <section class="categories">
+            <h2>Courses</h2>
+            <div class="category-tabs">
+                <div class="category-tab"><a href="python.html" style="text-decoration: none; color: inherit;">Python</a></div>
+                <div class="category-tab"><a href="sql.html" style="text-decoration: none; color: inherit;">SQL</a></div>
+                <div class="category-tab"><a href="Ds.html" style="text-decoration: none; color: inherit;">Data Science</a></div>
+                <div class="category-tab"><a href="AI.html" style="text-decoration: none; color: inherit;">Artificial Intelligence</a></div>
+                <div class="category-tab"><a href="ML.html" style="text-decoration: none; color: inherit;">Machine Learning</a></div>
+                <div class="category-tab"><a href="Webdev.html" style="text-decoration: none; color: inherit;">Web Development</a></div>
+            </div>         
+        </section>
+    </div>
+
+    <script>
+        // Function to toggle between Sign In and Sign Up
+        const authModal = document.getElementById('authModal');
+        const mainContent = document.getElementById('mainContent');
+        const showSignUp = document.getElementById('showSignUp');
+        const authForm = document.getElementById('authForm');
+
+        // Show Sign Up form on clicking Sign Up link
+        showSignUp.addEventListener('click', function(event) {
+            event.preventDefault();
+            authForm.innerHTML = `
+                <h2>Sign Up</h2>
+                <input type="text" id="fullName" placeholder="Full Name" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Sign Up</button>
+                <p>Already have an account? <a href="#" id="showSignIn">Sign In</a></p>
+            `;
+            const showSignIn = document.getElementById('showSignIn');
+            showSignIn.addEventListener('click', function(event) {
+                event.preventDefault();
+                authForm.innerHTML = `
+                    <h2>Sign In</h2>
+                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <button type="submit">Sign In</button>
+                    <p>Don't have an account? <a href="#" id="showSignUp">Sign Up</a></p>
+                `;
+            });
+        });
+
+        // Handle Form Submission (for demonstration purposes, just show success)
+        authForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Simulating successful login/sign-up
+            authModal.style.display = 'none';
+            mainContent.style.display = 'block';
+        });
+
+        // Initial page load - Show the Sign In modal
+        window.onload = function() {
+            authModal.style.display = 'flex';
+            mainContent.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
